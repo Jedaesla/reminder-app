@@ -1,5 +1,5 @@
 import { ReminderApplicationRepository } from '../persistence/repositories/reminder.repository';
-import { ReminderModel } from '../persistence/models/reminder.model';
+import { ReminderModelApplication } from '../persistence/models/reminder.model';
 import { Domain } from '../../domain/domain.interface';
 import { UuidDomainService } from '../../domain/services/uuid.service';
 import { CreateReminderApplicationDto } from '../dto/create-user.dto';
@@ -8,7 +8,7 @@ import { CreateReminderDomainDto } from 'src/Remider/domain/dto/create-reminder.
 
 export class CreateReminderUseCase {
   constructor(
-    private readonly reminderRepository: ReminderApplicationRepository<ReminderModel>,
+    private readonly reminderRepository: ReminderApplicationRepository<ReminderModelApplication>,
     private readonly domainController: Domain,
     private readonly uuidService: UuidDomainService,
   ) {}
@@ -54,7 +54,7 @@ export class CreateReminderUseCase {
   }
 
   private mapReminderDtoToApplication(
-    reminderDto: ReminderModel,
+    reminderDto: ReminderModelApplication,
   ): ReminderApplicationDto {
     const reminder = new ReminderApplicationDto();
     reminder.id = reminderDto.id;

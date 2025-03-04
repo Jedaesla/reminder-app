@@ -8,12 +8,18 @@ import { ReminderRepository } from './repositories/reminder.repository';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: envs.DB_HOST,
-      port: envs.DB_PORT,
-      database: envs.DB_NAME,
-      username: envs.DB_USERNAME,
-      password: envs.DB_PASSWORD,
+      //host: envs.DB_HOST,
+      //port: envs.DB_PORT,
+      //database: envs.DB_NAME,
+      //username: envs.DB_USERNAME,
+      //password: envs.DB_PASSWORD,
+      url: envs.DATABASE_URL,
       synchronize: true,
+      ssl: false,
+      // extra: {
+      //   ssl: { rejectUnauthorized: false },
+      // },
+      autoLoadEntities: true,
       entities: [ReminderModelInfrastructure],
     }),
     TypeOrmModule.forFeature([ReminderModelInfrastructure]),

@@ -5,9 +5,7 @@ services:
       - "8222:8222"
 
   client-gateway:
-    build:
-      context: ./client-gateway
-      dockerfile: dockerfile
+    build: ./client-gateway
     ports:
       - "${CLIENT_GATEWAY_PORT}:3000"
     volumes:
@@ -16,3 +14,31 @@ services:
     environment:
       - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222,nats://nats-server:4223
+  
+  db:
+    image: postgres:16.2
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    container_name: reminderdb
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+      
+# Reminder MS
+  reminder-ms:
+    depends_on:
+      - db
+    build: ./reminder-ms
+    volumes:
+      - ./reminder-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3001
+      - NATS_SERVERS=nats://nats-server:4222,nats://nats-server:4223
+      - DATABASE_URL=${DATABASE_URL}
+
+      

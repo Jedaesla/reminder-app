@@ -9,6 +9,7 @@ interface EnvVars {
   DB_HOST: string;
   DB_PORT: number;
   DB_USERNAME: string;
+  DATABASE_URL: string;
   NATS_SERVERS: string[];
 }
 
@@ -20,6 +21,7 @@ const envsSchema = joi
     DB_NAME: joi.string().required(),
     DB_HOST: joi.string().required(),
     DB_PORT: joi.number().required(),
+    DATABASE_URL: joi.string().required(),
     DB_USERNAME: joi.string().required(),
   })
   .unknown(true);
@@ -42,5 +44,6 @@ export const envs = {
   DB_HOST: envVars.DB_HOST,
   DB_PORT: envVars.DB_PORT,
   DB_USERNAME: envVars.DB_USERNAME,
+  DATABASE_URL: envVars.DATABASE_URL,
   natsServers: envVars.NATS_SERVERS,
 };
