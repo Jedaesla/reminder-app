@@ -32,4 +32,9 @@ export class ReminderController {
       throw new RpcException(error);
     }
   }
+
+  @Get()
+  findAllReminders() {
+    return this.client.send({ cmd: 'find_all_reminders' }, {});
+  }
 }

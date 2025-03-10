@@ -44,4 +44,14 @@ export class InfrastructureController {
       throw new RpcException(error.message);
     }
   }
+
+  @MessagePattern({ cmd: 'find_all_reminders' })
+  async findAllReminders() {
+    try {
+      const reminders = await this.application.findAllReminders();
+      return reminders;
+    } catch (error) {
+      throw new RpcException(error.message);
+    }
+  }
 }
