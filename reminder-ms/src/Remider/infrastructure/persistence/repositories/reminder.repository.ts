@@ -21,19 +21,27 @@ export class ReminderRepository
     const data = this.mapApplicationDtoToUserModel(reminder);
     return this.repository.save(data);
   }
-  update(
+
+  async update(
     reminder: UpdateReminderApplicationDto,
   ): Promise<ReminderModelInfrastructure> {
     throw new Error('Method not implemented.');
   }
-  delete(id: string): Promise<boolean> {
+
+  async delete(id: string): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
-  findById(id: string): Promise<ReminderModelInfrastructure | null> {
-    throw new Error('Method not implemented.');
+
+  async findById(id: string): Promise<ReminderModelInfrastructure | null> {
+    return await this.repository.findOne({
+      where: {
+        id,
+      },
+    });
   }
-  findAll(): Promise<ReminderModelInfrastructure[]> {
-    throw new Error('Method not implemented.');
+
+  async findAll(): Promise<ReminderModelInfrastructure[]> {
+    return this.repository.find();
   }
 
   private mapApplicationDtoToUserModel(

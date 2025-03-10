@@ -5,6 +5,7 @@ import { ReminderApplicationDto } from './dto/reminder.dto';
 import { ReminderModelApplication } from './persistence/models/reminder.model';
 import { ReminderApplicationRepository } from './persistence/repositories/reminder.repository';
 import { CreateReminderUseCase } from './use-cases/create-reminder';
+import { FindReminderByIdUseCase } from './use-cases/findById-reminder';
 
 export class ApplicationController extends ApplicationInterface {
   constructor(
@@ -31,5 +32,10 @@ export class ApplicationController extends ApplicationInterface {
       reminderDateTime,
       isCompleted,
     });
+  }
+
+  findReminderById(id: string): Promise<ReminderApplicationDto> {
+    const useCase = new FindReminderByIdUseCase(this.reminderRepository);
+    return useCase.execute(id);
   }
 }

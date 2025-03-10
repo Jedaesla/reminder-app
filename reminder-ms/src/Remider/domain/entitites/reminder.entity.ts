@@ -1,5 +1,4 @@
 import { CreateReminderDomainDto } from '../dto/create-reminder.dto';
-import { UpdateReminderDomainDto } from '../dto/update-reminder.dto';
 import { UuidDomainService } from '../services/uuid.service';
 
 export class ReminderEntity {
@@ -72,16 +71,4 @@ export class ReminderEntity {
   getErrors(): Map<string, boolean> {
     return this._errors;
   }
-
-  update(data: UpdateReminderDomainDto): this {
-    this.title = data.title || this.title;
-    this.description = data.description || this.description;
-    this.reminderDateTime = data.reminderDateTime || this.reminderDateTime;
-    this.isCompleted = data.isCompleted || this.isCompleted;
-
-    this.validate();
-
-    return this;
-  }
-  //TODO: Editar un recordatorio, marcar un recordatorio como completado
 }

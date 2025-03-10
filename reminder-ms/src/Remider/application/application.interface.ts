@@ -1,6 +1,5 @@
 import { UuidDomainService } from '../domain/services/uuid.service';
 import { ReminderApplicationDto } from './dto/reminder.dto';
-
 export abstract class ApplicationInterface {
   abstract createReminder(
     title: string,
@@ -9,4 +8,5 @@ export abstract class ApplicationInterface {
     isCompleted: boolean,
     uuidService: UuidDomainService,
   ): Promise<ReminderApplicationDto>;
+  abstract findReminderById(id: string): Promise<ReminderApplicationDto>;
 }

@@ -5,6 +5,7 @@ import { UuidDomainService } from '../../domain/services/uuid.service';
 import { CreateReminderApplicationDto } from '../dto/create-user.dto';
 import { ReminderApplicationDto } from '../dto/reminder.dto';
 import { CreateReminderDomainDto } from 'src/Remider/domain/dto/create-reminder.dto';
+import { ReminderDomainDto } from 'src/Remider/domain/dto/reminder.dto';
 
 export class CreateReminderUseCase {
   constructor(
@@ -41,7 +42,7 @@ export class CreateReminderUseCase {
   }
 
   private mapReminderDtoToPersistence(
-    reminderDto: ReminderApplicationDto,
+    reminderDto: ReminderDomainDto,
   ): ReminderApplicationDto {
     const reminder = new ReminderApplicationDto();
     reminder.id = reminderDto.id;
