@@ -6,4 +6,5 @@ export interface ReminderModelApplication {
   isCompleted: boolean;
   createdAt: Date;
   updatedAt: Date | null;
+  available: boolean;
 }

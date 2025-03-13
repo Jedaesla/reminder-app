@@ -1,7 +1,8 @@
-import { Controller, HttpStatus, Logger, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Logger, ParseUUIDPipe } from '@nestjs/common';
 import { ApplicationInterface } from 'src/Remider/application/application.interface';
 import { UuidService } from '../persistence/services/uuid.service';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
+import { UpdateReminderInfraDto } from '../dto/update-reminder.dto';
 
 @Controller('reminder')
 export class InfrastructureController {
@@ -46,10 +47,33 @@ export class InfrastructureController {
   }
 
   @MessagePattern({ cmd: 'find_all_reminders' })
-  async findAllReminders() {
+  async findAll() {
     try {
       const reminders = await this.application.findAllReminders();
       return reminders;
+    } catch (error) {
+      throw new RpcException(error.message);
+    }
+  }
+
+  @MessagePattern({ cmd: 'update_reminder' })
+  async update(@Payload() updateReminder: UpdateReminderInfraDto) {
+    try {
+      const reminder = await this.application.updateReminder(
+        updateReminder.id,
+        updateReminder,
+      );
+      return reminder;
+    } catch (error) {
+      throw new RpcException(error.message);
+    }
+  }
+
+  @MessagePattern({ cmd: 'delete_reminder' })
+  async delete(@Payload('id', ParseUUIDPipe) id: string) {
+    try {
+      const reminder = await this.application.deleteRemider(id);
+      return reminder;
     } catch (error) {
       throw new RpcException(error.message);
     }

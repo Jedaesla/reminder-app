@@ -2,6 +2,7 @@ import { ReminderApplicationRepository } from '../persistence/repositories/remin
 import { ReminderModelApplication } from '../persistence/models/reminder.model';
 import { ReminderApplicationDto } from '../dto/reminder.dto';
 import { UseCaseException } from '../exceptions/use-case.exception';
+import { ReminderMapApplication } from '../mappers/reminder.mapper';
 
 export class FindReminderByIdUseCase {
   constructor(
@@ -13,20 +14,7 @@ export class FindReminderByIdUseCase {
     if (!reminder) {
       throw new UseCaseException(`User with id ${id} not found`);
     }
-    const answer = this.mapReminderDtoToApplication(reminder);
+    const answer = ReminderMapApplication.toApplicationDto(reminder);
     return answer;
-  }
-
-  private mapReminderDtoToApplication(
-    reminderDto: ReminderModelApplication,
-  ): ReminderApplicationDto {
-    const reminder = new ReminderApplicationDto();
-    reminder.id = reminderDto.id;
-    reminder.title = reminderDto.title;
-    reminder.description = reminderDto.title;
-    reminder.reminderDateTime = reminderDto.description;
-    reminder.isCompleted = reminderDto.isCompleted;
-
-    return reminder;
   }
 }

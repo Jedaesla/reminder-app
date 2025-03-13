@@ -2,7 +2,7 @@ import { ReminderApplicationRepository } from '../persistence/repositories/remin
 import { ReminderModelApplication } from '../persistence/models/reminder.model';
 import { Domain } from '../../domain/domain.interface';
 import { UuidDomainService } from '../../domain/services/uuid.service';
-import { CreateReminderApplicationDto } from '../dto/create-user.dto';
+import { CreateReminderApplicationDto } from '../dto/create-reminder.dto';
 import { ReminderApplicationDto } from '../dto/reminder.dto';
 import { CreateReminderDomainDto } from 'src/Remider/domain/dto/create-reminder.dto';
 import { ReminderDomainDto } from 'src/Remider/domain/dto/reminder.dto';
@@ -60,8 +60,8 @@ export class CreateReminderUseCase {
     const reminder = new ReminderApplicationDto();
     reminder.id = reminderDto.id;
     reminder.title = reminderDto.title;
-    reminder.description = reminderDto.title;
-    reminder.reminderDateTime = reminderDto.description;
+    reminder.description = reminderDto.description;
+    reminder.reminderDateTime = reminderDto.reminderDateTime;
     reminder.isCompleted = reminderDto.isCompleted;
 
     return reminder;

@@ -1,7 +1,7 @@
 import { ReminderApplicationRepository } from 'src/Remider/application/persistence/repositories/reminder.repository';
 import { ReminderModelInfrastructure } from '../models/reminder.model';
-import { CreateReminderApplicationDto } from 'src/Remider/application/dto/create-user.dto';
-import { UpdateReminderApplicationDto } from 'src/Remider/application/dto/update-user.dto';
+import { CreateReminderApplicationDto } from 'src/Remider/application/dto/create-reminder.dto';
+import { UpdateReminderApplicationDto } from 'src/Remider/application/dto/update-reminder.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -23,25 +23,43 @@ export class ReminderRepository
   }
 
   async update(
+    id: string,
     reminder: UpdateReminderApplicationDto,
   ): Promise<ReminderModelInfrastructure> {
-    throw new Error('Method not implemented.');
+    const reminderResult = await this.findById(id);
+    if (!reminderResult) {
+      throw new Error('Reminder not found');
+    }
+    const dataUpdate = {
+      ...reminderResult,
+      ...reminder,
+      updatedAt: new Date(),
+    };
+
+    return await this.repository.save(dataUpdate);
   }
 
   async delete(id: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    const reminderUpdate = await this.repository.update(id, {
+      available: false,
+    });
+    if (reminderUpdate.affected === 0) {
+      throw new Error('Reminder not found');
+    }
+    return true;
   }
 
   async findById(id: string): Promise<ReminderModelInfrastructure | null> {
     return await this.repository.findOne({
       where: {
         id,
+        available: true,
       },
     });
   }
 
   async findAll(): Promise<ReminderModelInfrastructure[]> {
-    return this.repository.find();
+    return this.repository.find({ where: { available: true } });
   }
 
   private mapApplicationDtoToUserModel(

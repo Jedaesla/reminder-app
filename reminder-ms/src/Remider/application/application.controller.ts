@@ -2,11 +2,14 @@ import { Domain } from '../domain/domain.interface';
 import { UuidDomainService } from '../domain/services/uuid.service';
 import { ApplicationInterface } from './application.interface';
 import { ReminderApplicationDto } from './dto/reminder.dto';
+import { UpdateReminderApplicationDto } from './dto/update-reminder.dto';
 import { ReminderModelApplication } from './persistence/models/reminder.model';
 import { ReminderApplicationRepository } from './persistence/repositories/reminder.repository';
 import { CreateReminderUseCase } from './use-cases/create-reminder';
+import { DeleteReminderUseCase } from './use-cases/delete-reminder';
 import { FindAllRemindersUseCase } from './use-cases/findAll-reminders';
 import { FindReminderByIdUseCase } from './use-cases/findById-reminder';
+import { UpdateReminderUseCase } from './use-cases/update-reminder';
 
 export class ApplicationController extends ApplicationInterface {
   constructor(
@@ -43,5 +46,18 @@ export class ApplicationController extends ApplicationInterface {
   findAllReminders(): Promise<ReminderApplicationDto[]> {
     const useCase = new FindAllRemindersUseCase(this.reminderRepository);
     return useCase.execute();
+  }
+
+  updateReminder(
+    id: string,
+    reminder: UpdateReminderApplicationDto,
+  ): Promise<ReminderApplicationDto> {
+    const useCase = new UpdateReminderUseCase(this.reminderRepository);
+    return useCase.execute(id, reminder);
+  }
+
+  deleteRemider(id: string): Promise<boolean> {
+    const useCase = new DeleteReminderUseCase(this.reminderRepository);
+    return useCase.execute(id);
   }
 }

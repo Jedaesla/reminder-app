@@ -23,4 +23,7 @@ export class ReminderModelInfrastructure implements ReminderModelApplication {
 
   @Column({ type: 'timestamp', nullable: true })
   updatedAt: Date | null;
+
+  @Column({ type: 'bool', default: true })
+  available: boolean;
 }
