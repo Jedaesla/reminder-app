@@ -40,5 +40,20 @@ services:
       - PORT=3001
       - NATS_SERVERS=nats://nats-server:4222,nats://nats-server:4223
       - DATABASE_URL=${DATABASE_URL}
+  
+  auth-ms:
+    depends_on:
+      - db
+    container_name: auth-ms
+    build: ./auth-ms
+    volumes:
+      - ./auth-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3002
+      - NATS_SERVERS=nats://nats-server:4222,nats://nats-server:4223
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+
 
       
