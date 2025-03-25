@@ -10,7 +10,7 @@ export class JwtInfrastructureService implements JwtApplicationService {
   sign(payload: Omit<UserApplicationDto, 'password'>): string {
     return this.jwtService.sign(payload);
   }
-  verify(token: string, options?: object): Promise<boolean> {
+  verify(token: string, options?: object): any {
     return this.jwtService.verify(token, options);
   }
 }

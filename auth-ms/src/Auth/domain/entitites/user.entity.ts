@@ -1,7 +1,6 @@
 import { CreateUserDomainDto } from '../dto/create-user.dto';
 import { LoginUserDomainDto } from '../dto/login-user.dto';
 import { PasswordHashDomainService } from '../services/password-hash.service';
-import { UserDomainService } from '../services/user.service';
 import { UuidDomainService } from '../services/uuid.service';
 
 export class UserEntity {
@@ -34,10 +33,7 @@ export class UserEntity {
     return this;
   }
 
-  async signIn(
-    data: LoginUserDomainDto,
-    userService: UserDomainService,
-  ): Promise<boolean> {
+  signIn(data: LoginUserDomainDto): boolean {
     this.email = data.email;
     this.password = this._generateHashService.hash(data.password);
     this.validate();
@@ -45,13 +41,7 @@ export class UserEntity {
     if (!this.isValid()) {
       return false;
     }
-
-    const userValid = await userService.validateUserAndPassword(
-      this.email,
-      this.password,
-    );
-
-    return userValid;
+    return true;
   }
 
   validate(uuidService?: UuidDomainService): this {

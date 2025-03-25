@@ -2,7 +2,6 @@ import { UserApplicationRepository } from '../persistence/repositories/user.repo
 import { UserModelApplication } from '../persistence/models/user.model';
 import { Domain } from 'src/Auth/domain/domain.interface';
 import { JwtApplicationService } from '../services/jwt.service';
-import { UserDomainService } from 'src/Auth/domain/services/user.service';
 import { PasswordHashDomainService } from 'src/Auth/domain/services/password-hash.service';
 import { SignInUserApplicationDto } from '../dto/signin-user.dto';
 import { TokenApplicationDto } from '../dto/token.dto';
@@ -14,36 +13,44 @@ export class SignInUserUseCase {
     private readonly userRepository: UserApplicationRepository<UserModelApplication>,
     private readonly domainController: Domain,
     private readonly jwtService: JwtApplicationService,
-    private readonly userService: UserDomainService,
     private readonly passwordHashService: PasswordHashDomainService,
   ) {}
 
   async execute(
     signInDto: SignInUserApplicationDto,
   ): Promise<TokenApplicationDto> {
-    const isAuthenticated = await this.domainController.signIn(
+    const isValidDataLogin = this.domainController.signIn(
       signInDto,
-      this.userService,
       this.passwordHashService,
     );
 
-    if (isAuthenticated) {
+    if (isValidDataLogin) {
       const token = new TokenApplicationDto();
-      const data = await this.userRepository.findByEmail(signInDto.email);
-      if (!data) {
+      const userData = await this.userRepository.findByEmail(signInDto.email);
+      if (!userData) {
         throw new UseCaseException('Invalid email or password');
       }
-      const user = this.mapUserModelToUserDto(data);
-      token.token = await this.generateToken(user);
+      const isPasswordValid = this.passwordHashService.compare(
+        signInDto.password,
+        userData.password,
+      );
+      if (!isPasswordValid) {
+        throw new UseCaseException('Invalid email or password');
+      }
+      const user = this.mapUserModelToUserDto(userData);
+      token.token = this.generateToken(user);
       return token;
     }
     throw new UseCaseException('Invalid email or password');
   }
 
-  private async generateToken(
-    data: Omit<UserApplicationDto, 'password'>,
-  ): Promise<string> {
-    return await this.jwtService.sign(data);
+  private generateToken(data: Omit<UserApplicationDto, 'password'>): string {
+    const payload = {
+      id: data.id,
+      email: data.email,
+      name: data.name,
+    };
+    return this.jwtService.sign(payload);
   }
 
   private mapUserModelToUserDto(

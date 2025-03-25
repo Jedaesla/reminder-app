@@ -5,7 +5,6 @@ import { UserDomainDto } from './dto/user.dto';
 import { UserEntity } from './entitites/user.entity';
 import { InvalidDataException } from './exceptions/invalid-data.exception';
 import { PasswordHashDomainService } from './services/password-hash.service';
-import { UserDomainService } from './services/user.service';
 import { UuidDomainService } from './services/uuid.service';
 
 export class DomainController extends Domain {
@@ -23,13 +22,12 @@ export class DomainController extends Domain {
     return user;
   }
 
-  async signIn(
+  signIn(
     data: LoginUserDomainDto,
-    userService: UserDomainService,
     passwordHashService: PasswordHashDomainService,
   ) {
     const user = new UserEntity(passwordHashService);
-    const isValidSignIn = await user.signIn(data, userService);
+    const isValidSignIn = user.signIn(data);
     if (!isValidSignIn) {
       throw new InvalidDataException('Invalid user data', user.getErrors());
     }

@@ -5,6 +5,7 @@ import { CreateUserInfraDto } from '../dto/create-user.dto';
 import { ApplicationInterface } from 'src/Auth/application/application.interface';
 import { JwtInfrastructureService } from '../services/jwt.service';
 import { PasswordHashService } from '../services/password-hash.service';
+import { SignInUserInfraDto } from '../dto/sigin-user.dto';
 
 @Controller()
 export class InfrastructureController {
@@ -26,52 +27,41 @@ export class InfrastructureController {
         this.uuidService,
         this.passwordHashService,
       );
-      return user;
+      const { password: __, ...rest } = user;
+      return rest;
+      //return user;
     } catch (error) {
       throw new RpcException(error.message);
     }
   }
 
-  // @MessagePattern({ cmd: 'find_reminder_by_id' })
-  // async findById(@Payload('id', ParseUUIDPipe) id: string) {
-  //   try {
-  //     const reminder = await this.application.findReminderById(id);
-  //     return reminder;
-  //   } catch (error) {
-  //     throw new RpcException(error.message);
-  //   }
-  // }
+  @MessagePattern({ cmd: 'signin_user' })
+  async signInUser(
+    @Payload()
+    signInUserInfraDto: SignInUserInfraDto,
+  ) {
+    try {
+      const dataLogin = await this.application.signIn(
+        signInUserInfraDto,
+        this.jwtService,
+        this.passwordHashService,
+      );
+      return dataLogin;
+    } catch (error) {
+      throw new RpcException(error.message);
+    }
+  }
 
-  // @MessagePattern({ cmd: 'find_all_reminders' })
-  // async findAll() {
-  //   try {
-  //     const reminders = await this.application.findAllReminders();
-  //     return reminders;
-  //   } catch (error) {
-  //     throw new RpcException(error.message);
-  //   }
-  // }
-
-  // @MessagePattern({ cmd: 'update_reminder' })
-  // async update(@Payload() updateReminder: UpdateReminderInfraDto) {
-  //   try {
-  //     const reminder = await this.application.updateReminder(
-  //       updateReminder.id,
-  //       updateReminder,
-  //     );
-  //     return reminder;
-  //   } catch (error) {
-  //     throw new RpcException(error.message);
-  //   }
-  // }
-
-  // @MessagePattern({ cmd: 'delete_reminder' })
-  // async delete(@Payload('id', ParseUUIDPipe) id: string) {
-  //   try {
-  //     const reminder = await this.application.deleteRemider(id);
-  //     return reminder;
-  //   } catch (error) {
-  //     throw new RpcException(error.message);
-  //   }
-  // }
+  @MessagePattern({ cmd: 'verify_token' })
+  async verifyToken(@Payload() token: string) {
+    try {
+      const tokenValidate = await this.application.validateToken(
+        token,
+        this.jwtService,
+      );
+      return tokenValidate;
+    } catch (error) {
+      throw new RpcException(error.message);
+    }
+  }
 }

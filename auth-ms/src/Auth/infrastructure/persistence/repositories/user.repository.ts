@@ -51,46 +51,6 @@ export class UserRepository
     });
   }
 
-  // async update(
-  //   id: string,
-  //   reminder: UpdateReminderApplicationDto,
-  // ): Promise<ReminderModelInfrastructure> {
-  //   const reminderResult = await this.findById(id);
-  //   if (!reminderResult) {
-  //     throw new Error('Reminder not found');
-  //   }
-  //   const dataUpdate = {
-  //     ...reminderResult,
-  //     ...reminder,
-  //     updatedAt: new Date(),
-  //   };
-
-  //   return await this.repository.save(dataUpdate);
-  // }
-
-  // async delete(id: string): Promise<boolean> {
-  //   const reminderUpdate = await this.repository.update(id, {
-  //     available: false,
-  //   });
-  //   if (reminderUpdate.affected === 0) {
-  //     throw new Error('Reminder not found');
-  //   }
-  //   return true;
-  // }
-
-  // async findById(id: string): Promise<ReminderModelInfrastructure | null> {
-  //   return await this.repository.findOne({
-  //     where: {
-  //       id,
-  //       available: true,
-  //     },
-  //   });
-  // }
-
-  // async findAll(): Promise<ReminderModelInfrastructure[]> {
-  //   return this.repository.find({ where: { available: true } });
-  // }
-
   private mapApplicationDtoToUserModel(
     data: CreateUserApplicationDto,
   ): UserModelInfrastructure {
