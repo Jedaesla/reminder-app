@@ -16,6 +16,7 @@ export class InfrastructureController {
   async create(
     @Payload()
     body: {
+      userId: string;
       title: string;
       description: string;
       reminderDateTime: string;
@@ -24,6 +25,7 @@ export class InfrastructureController {
   ) {
     try {
       const data = await this.application.createReminder(
+        body.userId,
         body.title,
         body.description,
         body.reminderDateTime,

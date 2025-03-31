@@ -34,6 +34,7 @@ export class CreateReminderUseCase {
     reminderDto: CreateReminderApplicationDto,
   ): CreateReminderDomainDto {
     const reminder = new CreateReminderDomainDto();
+    reminder.userId = reminderDto.userId;
     reminder.title = reminderDto.title;
     reminder.description = reminderDto.description;
     reminder.reminderDateTime = reminderDto.reminderDateTime;
@@ -45,6 +46,7 @@ export class CreateReminderUseCase {
     reminderDto: ReminderDomainDto,
   ): ReminderApplicationDto {
     const reminder = new ReminderApplicationDto();
+    reminder.userId = reminderDto.userId;
     reminder.id = reminderDto.id;
     reminder.title = reminderDto.title;
     reminder.description = reminderDto.description;
@@ -58,6 +60,7 @@ export class CreateReminderUseCase {
     reminderDto: ReminderModelApplication,
   ): ReminderApplicationDto {
     const reminder = new ReminderApplicationDto();
+    reminder.userId = reminderDto.userId;
     reminder.id = reminderDto.id;
     reminder.title = reminderDto.title;
     reminder.description = reminderDto.description;

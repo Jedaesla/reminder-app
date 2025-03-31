@@ -3,6 +3,7 @@ import { ReminderApplicationDto } from './dto/reminder.dto';
 import { UpdateReminderApplicationDto } from './dto/update-reminder.dto';
 export abstract class ApplicationInterface {
   abstract createReminder(
+    userId: string,
     title: string,
     description: string,
     reminderDateTime: string,

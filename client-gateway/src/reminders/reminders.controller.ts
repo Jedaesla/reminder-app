@@ -8,20 +8,31 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NATS_SERVICE } from 'src/config';
 import { CreateReminderDto } from './dto/create-reminder.dto';
-import { catchError, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { UpdateReminderDto } from './dto/update-reminder.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { User } from 'src/auth/decorators/user.decorator';
+import { CurrentUser } from 'src/auth/interfaces/current-user.interface';
 
+@UseGuards(AuthGuard)
 @Controller('reminders')
 export class ReminderController {
   constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy) {}
 
   @Post()
-  createReminder(@Body() createReminderDto: CreateReminderDto) {
-    return this.client.send({ cmd: 'create_reminder' }, createReminderDto);
+  createReminder(
+    @User() user: CurrentUser,
+    @Body() createReminderDto: CreateReminderDto,
+  ) {
+    return this.client.send(
+      { cmd: 'create_reminder' },
+      { userId: user.id, ...createReminderDto },
+    );
   }
 
   @Get(':id')
@@ -37,8 +48,8 @@ export class ReminderController {
   }
 
   @Get()
-  findAllReminders() {
-    return this.client.send({ cmd: 'find_all_reminders' }, {});
+  findAllReminders(@User() user: CurrentUser) {
+    return this.client.send({ cmd: 'find_all_reminders' }, { userId: user.id });
   }
 
   @Patch(':id')

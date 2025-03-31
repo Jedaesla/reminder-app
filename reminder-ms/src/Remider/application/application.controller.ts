@@ -19,6 +19,7 @@ export class ApplicationController extends ApplicationInterface {
     super();
   }
   createReminder(
+    userId: string,
     title: string,
     description: string,
     reminderDateTime: string,
@@ -31,6 +32,7 @@ export class ApplicationController extends ApplicationInterface {
       uuidService,
     );
     return useCase.execute({
+      userId,
       title,
       description,
       reminderDateTime,

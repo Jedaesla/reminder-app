@@ -3,21 +3,23 @@ import { UuidDomainService } from '../services/uuid.service';
 
 export class ReminderEntity {
   id: string;
+  userId: string;
   title: string;
   description: string;
   reminderDateTime: string;
   isCompleted: boolean;
   private readonly _errors: Map<string, boolean>;
-  private readonly _generateUuidService: UuidDomainService;
+  private readonly _uuidService: UuidDomainService;
 
-  constructor(generateUuidService: UuidDomainService) {
+  constructor(uuidService: UuidDomainService) {
     this._errors = new Map();
-    this._generateUuidService = generateUuidService;
+    this._uuidService = uuidService;
     this.isCompleted = false;
   }
 
   create(data: CreateReminderDomainDto): this {
-    this.id = this._generateUuidService.generateUuid();
+    this.id = this._uuidService.generateUuid();
+    this.userId = data.userId;
     this.title = data.title;
     this.description = data.description;
     this.reminderDateTime = data.reminderDateTime;
@@ -30,11 +32,14 @@ export class ReminderEntity {
 
   validate(): this {
     if (
-      this._generateUuidService &&
+      this._uuidService &&
       this.id.length > 0 &&
-      this.validateId() === false
+      this.validateId(this.id) === false
     ) {
       this._errors.set('id', false);
+    }
+    if (this.validateId(this.userId) === false) {
+      this._errors.set('userId', false);
     }
     if (this.validateTitle() === false) {
       this._errors.set('title', false);
@@ -46,8 +51,8 @@ export class ReminderEntity {
     return this;
   }
 
-  validateId(): boolean {
-    return this._generateUuidService.validateUuid(this.id);
+  validateId(id: string): boolean {
+    return this._uuidService.validateUuid(id);
   }
 
   validateTitle(): boolean {

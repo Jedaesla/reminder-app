@@ -1,5 +1,6 @@
 export interface ReminderModelApplication {
   id: string;
+  userId: string;
   title: string;
   description: string;
   reminderDateTime: string;

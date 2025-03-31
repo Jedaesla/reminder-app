@@ -7,6 +7,9 @@ export class ReminderModelInfrastructure implements ReminderModelApplication {
   id: string;
 
   @Column('text')
+  userId: string;
+
+  @Column('text')
   title: string;
 
   @Column('text')

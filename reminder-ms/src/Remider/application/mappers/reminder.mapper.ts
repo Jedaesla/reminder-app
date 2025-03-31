@@ -6,6 +6,7 @@ export class ReminderMapApplication {
     reminderDto: ReminderModelApplication,
   ): ReminderApplicationDto {
     return {
+      userId: reminderDto.userId,
       id: reminderDto.id,
       title: reminderDto.title,
       description: reminderDto.description,

@@ -66,6 +66,7 @@ export class ReminderRepository
     data: CreateReminderApplicationDto,
   ): ReminderModelInfrastructure {
     const reminder = new ReminderModelInfrastructure();
+    reminder.userId = data.userId;
     reminder.title = data.title;
     reminder.description = data.description;
     reminder.reminderDateTime = data.reminderDateTime;
