@@ -49,9 +49,9 @@ export class InfrastructureController {
   }
 
   @MessagePattern({ cmd: 'find_all_reminders' })
-  async findAll() {
+  async findAll(@Payload() body: { userId: string }) {
     try {
-      const reminders = await this.application.findAllReminders();
+      const reminders = await this.application.findAllReminders(body.userId);
       return reminders;
     } catch (error) {
       throw new RpcException(error.message);

@@ -9,5 +9,5 @@ export interface ReminderApplicationRepository<
   update(id: string, reminder: UpdateReminderApplicationDto): Promise<Reminder>;
   delete(id: string): Promise<boolean>;
   findById(id: string): Promise<Reminder | null>;
-  findAll(): Promise<Reminder[]>;
+  findAll(userId: string): Promise<Reminder[]>;
 }

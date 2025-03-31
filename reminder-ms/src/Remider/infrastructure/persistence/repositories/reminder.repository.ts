@@ -58,8 +58,8 @@ export class ReminderRepository
     });
   }
 
-  async findAll(): Promise<ReminderModelInfrastructure[]> {
-    return this.repository.find({ where: { available: true } });
+  async findAll(userId: string): Promise<ReminderModelInfrastructure[]> {
+    return this.repository.find({ where: { available: true, userId } });
   }
 
   private mapApplicationDtoToUserModel(

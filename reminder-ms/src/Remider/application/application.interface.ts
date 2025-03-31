@@ -11,7 +11,7 @@ export abstract class ApplicationInterface {
     uuidService: UuidDomainService,
   ): Promise<ReminderApplicationDto>;
   abstract findReminderById(id: string): Promise<ReminderApplicationDto>;
-  abstract findAllReminders(): Promise<ReminderApplicationDto[]>;
+  abstract findAllReminders(userId: string): Promise<ReminderApplicationDto[]>;
   abstract updateReminder(
     id: string,
     reminder: UpdateReminderApplicationDto,

@@ -8,8 +8,12 @@ export class FindAllRemindersUseCase {
     private readonly reminderRepository: ReminderApplicationRepository<ReminderModelApplication>,
   ) {}
 
-  async execute(): Promise<ReminderApplicationDto[]> {
-    const reminders = await this.reminderRepository.findAll();
+  async execute({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<ReminderApplicationDto[]> {
+    const reminders = await this.reminderRepository.findAll(userId);
     const answer = reminders.map((reminder) =>
       ReminderMapApplication.toApplicationDto(reminder),
     );

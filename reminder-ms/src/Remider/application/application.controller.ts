@@ -45,9 +45,9 @@ export class ApplicationController extends ApplicationInterface {
     return useCase.execute(id);
   }
 
-  findAllReminders(): Promise<ReminderApplicationDto[]> {
+  findAllReminders(userId: string): Promise<ReminderApplicationDto[]> {
     const useCase = new FindAllRemindersUseCase(this.reminderRepository);
-    return useCase.execute();
+    return useCase.execute({ userId });
   }
 
   updateReminder(
