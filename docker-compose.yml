@@ -40,7 +40,8 @@ services:
       - PORT=3001
       - NATS_SERVERS=nats://nats-server:4222,nats://nats-server:4223
       - DATABASE_URL=${DATABASE_URL}
-  
+
+# Auth MS  
   auth-ms:
     depends_on:
       - db
@@ -54,6 +55,19 @@ services:
       - NATS_SERVERS=nats://nats-server:4222,nats://nats-server:4223
       - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
+
+# Notifications MS
+  notification-ms:
+    depends_on:
+      - db
+    build: ./notification-ms
+    volumes:
+      - ./notification-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3003
+      - NATS_SERVERS=nats://nats-server:4222,nats://nats-server:4223
+      - DATABASE_URL=${DATABASE_URL}
 
 
       
