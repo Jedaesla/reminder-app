@@ -1,5 +1,5 @@
 import { v4, validate, version } from 'uuid';
-import { UuidDomainService } from 'src/Remider/domain/services/uuid.service';
+import { UuidDomainService } from 'src/Notification/domain/services/uuid.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

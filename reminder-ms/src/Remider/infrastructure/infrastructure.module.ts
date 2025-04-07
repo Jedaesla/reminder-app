@@ -7,12 +7,15 @@ import { ReminderRepository } from './persistence/repositories/reminder.reposito
 import { ApplicationController } from '../application/application.controller';
 import { InfrastructureController } from './controllers/infrastructure.controller';
 import { UuidService } from './persistence/services/uuid.service';
+import { NatsModule } from 'src/transports/nats.module';
+import { NotificationService } from './persistence/services/notification.service';
 
 @Module({
-  imports: [PersistenceModule],
+  imports: [PersistenceModule, NatsModule],
   controllers: [InfrastructureController],
   providers: [
     UuidService,
+    NotificationService,
     {
       provide: Domain,
       useClass: DomainController,

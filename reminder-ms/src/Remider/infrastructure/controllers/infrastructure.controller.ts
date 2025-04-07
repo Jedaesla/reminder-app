@@ -3,6 +3,7 @@ import { ApplicationInterface } from 'src/Remider/application/application.interf
 import { UuidService } from '../persistence/services/uuid.service';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { UpdateReminderInfraDto } from '../dto/update-reminder.dto';
+import { NotificationService } from '../persistence/services/notification.service';
 
 @Controller('reminder')
 export class InfrastructureController {
@@ -10,6 +11,7 @@ export class InfrastructureController {
   constructor(
     private readonly application: ApplicationInterface,
     private readonly uuidService: UuidService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   @MessagePattern({ cmd: 'create_reminder' })
@@ -31,6 +33,7 @@ export class InfrastructureController {
         body.reminderDateTime,
         body.isCompleted,
         this.uuidService,
+        this.notificationService,
       );
       return data;
     } catch (error) {

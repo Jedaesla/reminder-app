@@ -6,12 +6,14 @@ import { CreateReminderApplicationDto } from '../dto/create-reminder.dto';
 import { ReminderApplicationDto } from '../dto/reminder.dto';
 import { CreateReminderDomainDto } from 'src/Remider/domain/dto/create-reminder.dto';
 import { ReminderDomainDto } from 'src/Remider/domain/dto/reminder.dto';
+import { NotificationDomainService } from 'src/Remider/domain/services/notification.service';
 
 export class CreateReminderUseCase {
   constructor(
     private readonly reminderRepository: ReminderApplicationRepository<ReminderModelApplication>,
     private readonly domainController: Domain,
     private readonly uuidService: UuidDomainService,
+    private readonly notificationService: NotificationDomainService,
   ) {}
 
   async execute(
@@ -27,6 +29,16 @@ export class CreateReminderUseCase {
       await this.reminderRepository.create(reminderPersistence);
 
     const answer = this.mapReminderDtoToApplication(remindersDto);
+
+    await this.notificationService.createNotification({
+      userId: answer.userId,
+      reminderId: answer.id,
+      title: answer.title,
+      message: answer.description,
+      sentAt: answer.reminderDateTime,
+      isRead: false,
+    });
+
     return answer;
   }
 

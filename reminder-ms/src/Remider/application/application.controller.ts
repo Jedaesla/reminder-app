@@ -1,4 +1,5 @@
 import { Domain } from '../domain/domain.interface';
+import { NotificationDomainService } from '../domain/services/notification.service';
 import { UuidDomainService } from '../domain/services/uuid.service';
 import { ApplicationInterface } from './application.interface';
 import { ReminderApplicationDto } from './dto/reminder.dto';
@@ -25,11 +26,13 @@ export class ApplicationController extends ApplicationInterface {
     reminderDateTime: string,
     isCompleted: boolean,
     uuidService: UuidDomainService,
+    notificationService: NotificationDomainService,
   ): Promise<ReminderApplicationDto> {
     const useCase = new CreateReminderUseCase(
       this.reminderRepository,
       this.domainController,
       uuidService,
+      notificationService,
     );
     return useCase.execute({
       userId,
