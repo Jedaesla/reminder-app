@@ -12,7 +12,7 @@ export class FindReminderByIdUseCase {
   async execute(id: string): Promise<ReminderApplicationDto> {
     const reminder = await this.reminderRepository.findById(id);
     if (!reminder) {
-      throw new UseCaseException(`User with id ${id} not found`);
+      throw new UseCaseException(`Reminder with id ${id} not found`);
     }
     const answer = ReminderMapApplication.toApplicationDto(reminder);
     return answer;
