@@ -11,7 +11,7 @@ export class NotificationMapApplication {
     return {
       id: notificationDto.id,
       userId: notificationDto.userId,
-      reminderId: notificationDto.userId,
+      reminderId: notificationDto.reminderId,
       title: notificationDto.title,
       message: notificationDto.message,
       isRead: notificationDto.isRead,

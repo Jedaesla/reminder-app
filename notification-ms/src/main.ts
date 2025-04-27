@@ -4,7 +4,7 @@ import { envs } from './config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
-async function bootstrap() {
+export async function bootstrap() {
   const logger = new Logger('NotificationMS-Main');
 
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -23,4 +23,9 @@ async function bootstrap() {
   await app.listen();
   logger.log(`Notification Microservice running on port ${envs.port}`);
 }
-bootstrap();
+//bootstrap();
+
+if (require.main === module) {
+  //solo ejecutarlo cuando se invoca este archivo directamente
+  bootstrap();
+}
