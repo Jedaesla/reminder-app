@@ -60,13 +60,13 @@ export class NotificationsController {
     @Body() body: { isRead: boolean },
   ) {
     try {
-      const reminder = await firstValueFrom(
+      const notification = await firstValueFrom(
         this.client.send(
           { cmd: 'update_notification' },
           { id, isRead: body.isRead },
         ),
       );
-      return reminder;
+      return notification;
     } catch (error) {
       throw new RpcException(error);
     }
@@ -75,10 +75,10 @@ export class NotificationsController {
   @Delete(':id')
   async deleteNotification(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      const reminder = await firstValueFrom(
+      const notification = await firstValueFrom(
         this.client.send({ cmd: 'delete_notification' }, { id }),
       );
-      return reminder;
+      return notification;
     } catch (error) {
       throw new RpcException(error);
     }

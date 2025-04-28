@@ -21,7 +21,7 @@ export class RpcCustomExceptionFilter implements ExceptionFilter {
     if (
       typeof rpcError === 'object' &&
       'status' in rpcError &&
-      ' message' in rpcError
+      'message' in rpcError
     ) {
       const status = isNaN(+rpcError.status) ? 400 : +rpcError.status;
       return response.status(status).json(rpcError);
