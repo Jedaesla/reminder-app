@@ -4,7 +4,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { envs } from './config';
 
-async function bootstrap() {
+export async function bootstrap() {
   const logger = new Logger('AuthMs-Main');
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     InfrastructureModule,
@@ -25,4 +25,6 @@ async function bootstrap() {
   await app.listen();
   logger.log(`Auth microservice running on port ${envs.port}`);
 }
-bootstrap();
+if (require.main === module) {
+  bootstrap();
+}
